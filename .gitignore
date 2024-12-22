@@ -1,1 +1,12 @@
 test1.txt
+
+# VSCODE SETUP
+.vscode
+
+# ARIFLOW
+airflow/dags/_pycache_
+airflow/logs/*
+airflow/standalone_admin_password.txt
+
+# PROJECT
+project/*
