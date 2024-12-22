@@ -7,6 +7,7 @@ test1.txt
 airflow/dags/_pycache_
 airflow/logs/*
 airflow/standalone_admin_password.txt
+airflow/*
 
 # PROJECT
 project/*
