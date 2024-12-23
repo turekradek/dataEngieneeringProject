@@ -1,0 +1,160 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data 
+      - /home/r/git_projekty/dataEngieneeringProject/project/docker_volume:/docker_volume 
+      - /home/r/git_projekty/dataEngieneeringProject/project/bronze:/bronze 
+      - /home/r/git_projekty/dataEngieneeringProject/project/silver:/silver 
+      - /home/r/git_projekty/dataEngieneeringProject/project/gold:/gold 
+      - /home/r/git_projekty/dataEngieneeringProject/project/files_csv:/files_csv 
+      - /home/r/git_projekty/dataEngieneeringProject/project/files_json:/files_json 
+    networks: 
+      - project1_network
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - /home/r/git_projekty/dataEngieneeringProject/project/prometheus.yaml:/etc/prometheus/prometheus.yaml
+      - /home/r/git_projekty/dataEngieneeringProject/project/docker_volume:/docker_volume 
+      - /home/r/git_projekty/dataEngieneeringProject/project/bronze:/bronze 
+      - /home/r/git_projekty/dataEngieneeringProject/project/silver:/silver 
+      - /home/r/git_projekty/dataEngieneeringProject/project/gold:/gold 
+      - /home/r/git_projekty/dataEngieneeringProject/project/files_csv:/files_csv 
+      - /home/r/git_projekty/dataEngieneeringProject/project/files_json:/files_json 
+    ports:
+      - "9090:9090"
+    networks:
+      - project1_network
+
+  grafana:
+    image: grafana/grafana:latest
+    volumes:
+      - /home/r/git_projekty/dataEngieneeringProject/project/docker_volume:/docker_volume 
+      - /home/r/git_projekty/dataEngieneeringProject/project/bronze:/bronze 
+      - /home/r/git_projekty/dataEngieneeringProject/project/silver:/silver 
+      - /home/r/git_projekty/dataEngieneeringProject/project/gold:/gold 
+      - /home/r/git_projekty/dataEngieneeringProject/project/files_csv:/files_csv 
+      - /home/r/git_projekty/dataEngieneeringProject/project/files_json:/files_json 
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - project1_network
+
+  flask_app: 
+    build: 
+      context: ./flask_app 
+      dockerfile: Dockerfile 
+    container_name: flask_app 
+    volumes:
+      - ./app:/app
+      - /home/r/git_projekty/dataEngieneeringProject/project/docker_volume:/docker_volume 
+      - /home/r/git_projekty/dataEngieneeringProject/project/bronze:/bronze 
+      - /home/r/git_projekty/dataEngieneeringProject/project/silver:/silver 
+      - /home/r/git_projekty/dataEngieneeringProject/project/gold:/gold 
+      - /home/r/git_projekty/dataEngieneeringProject/project/files_csv:/files_csv 
+      - /home/r/git_projekty/dataEngieneeringProject/project/files_json:/files_json 
+    environment:
+      - FLASK_ENV=development 
+    ports:
+     - "5000:5000" 
+    depends_on:
+     - db 
+     - prometheus
+    networks:
+      - project1_network
+
+  python_container: 
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    image: python:3.11-slim 
+    volumes: 
+      - ./scripts:/scripts 
+      - postgres_data:/var/lib/postgresql/data 
+      - /home/r/git_projekty/dataEngieneeringProject/project/docker_volume:/docker_volume 
+      - /home/r/git_projekty/dataEngieneeringProject/project/bronze:/bronze 
+      - /home/r/git_projekty/dataEngieneeringProject/project/silver:/silver 
+      - /home/r/git_projekty/dataEngieneeringProject/project/gold:/gold 
+      - /home/r/git_projekty/dataEngieneeringProject/project/files_csv:/files_csv 
+      - /home/r/git_projekty/dataEngieneeringProject/project/files_json:/files_json 
+    depends_on: 
+      - db 
+    command: > 
+      sh -c "apt-get update && apt-get install -y postgresql-client vim && tail -f /dev/null" 
+    networks: 
+      - project1_network
+
+  elasticsearch: 
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0 
+    container_name: elasticsearch 
+    environment: 
+      - discovery.type=single-node 
+      - xpack.security.enabled=false
+    ports: 
+      - "9200:9200" 
+      - "9300:9300" 
+    networks: 
+      - project1_network
+
+  kibana: 
+    image: docker.elastic.co/kibana/kibana:8.17.0 
+    container_name: kibana 
+    environment: 
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200 
+    ports: 
+      - "5601:5601" 
+    networks: 
+      - project1_network
+
+  elasticvue: 
+    image: cars10/elasticvue 
+    container_name: elasticvue 
+    ports: 
+      - "8080:8080" 
+    networks: 
+      - project1_network
+
+  zookeeper: 
+    image: confluentinc/cp-zookeeper:latest 
+    environment: 
+      ZOOKEEPER_CLIENT_PORT: 2181 
+      ZOOKEEPER_TICK_TIME: 2000 
+    ports: 
+      - "2181:2181" 
+    networks: 
+      - project1_network
+
+  kafka: 
+    image: confluentinc/cp-kafka:latest 
+    environment: 
+      KAFKA_BROKER_ID: 1 
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181 
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092 
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 
+    ports: 
+      - "9092:9092" 
+    depends_on: 
+      - zookeeper 
+    networks: 
+      - project1_network
+
+volumes:
+  postgres_data:
+  bronze:
+  silver:
+  gold:
+  metrics:
+
+networks:
+  project1_network:
+    driver: bridge
+

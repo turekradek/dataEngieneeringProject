@@ -10,4 +10,15 @@ airflow/standalone_admin_password.txt
 airflow/*
 
 # PROJECT
-project/*
+project/app
+project/bronze
+project/docker_volume
+project/files_json
+project/gold
+project/scripts
+project/silver
+project/Dockerfile2
+project/DockerfilePostgres
+project/notes
+project/notescopilot
+project/prometheus.yaml
