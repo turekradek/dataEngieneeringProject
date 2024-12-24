@@ -9,8 +9,14 @@ airflow/logs/*
 airflow/standalone_admin_password.txt
 airflow/*
 
+# FLASK_APP
+project/flask_app/__pycache__
+project/flask_app/app/__pycache__
+project/flask_app/app/app.log
+project/flask_app/app.log
+
 # PROJECT
-project/app
+project/app/__pycache__
 project/bronze
 project/docker_volume
 project/files_json

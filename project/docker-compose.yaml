@@ -3,6 +3,7 @@ version: '3.8'
 services:
   db:
     image: postgres:latest
+    container_name: postgresdb
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -20,6 +21,7 @@ services:
 
   prometheus:
     image: prom/prometheus:latest
+    container_name: prometheus
     volumes:
       - /home/r/git_projekty/dataEngieneeringProject/project/prometheus.yaml:/etc/prometheus/prometheus.yaml
       - /home/r/git_projekty/dataEngieneeringProject/project/docker_volume:/docker_volume 
@@ -35,6 +37,7 @@ services:
 
   grafana:
     image: grafana/grafana:latest
+    container_name: grafana 
     volumes:
       - /home/r/git_projekty/dataEngieneeringProject/project/docker_volume:/docker_volume 
       - /home/r/git_projekty/dataEngieneeringProject/project/bronze:/bronze 
@@ -55,7 +58,7 @@ services:
       dockerfile: Dockerfile 
     container_name: flask_app 
     volumes:
-      - ./app:/app
+      - ./flask_app:/app
       - /home/r/git_projekty/dataEngieneeringProject/project/docker_volume:/docker_volume 
       - /home/r/git_projekty/dataEngieneeringProject/project/bronze:/bronze 
       - /home/r/git_projekty/dataEngieneeringProject/project/silver:/silver 
@@ -64,6 +67,7 @@ services:
       - /home/r/git_projekty/dataEngieneeringProject/project/files_json:/files_json 
     environment:
       - FLASK_ENV=development 
+      - FLASK_APP=app/app.py
     ports:
      - "5000:5000" 
     depends_on:
@@ -76,7 +80,7 @@ services:
     build:
       context: . 
       dockerfile: Dockerfile
-    image: python:3.11-slim 
+    image: python:3.12-slim 
     volumes: 
       - ./scripts:/scripts 
       - postgres_data:/var/lib/postgresql/data 
@@ -125,6 +129,7 @@ services:
 
   zookeeper: 
     image: confluentinc/cp-zookeeper:latest 
+    container_name: zookeeper
     environment: 
       ZOOKEEPER_CLIENT_PORT: 2181 
       ZOOKEEPER_TICK_TIME: 2000 
@@ -135,6 +140,7 @@ services:
 
   kafka: 
     image: confluentinc/cp-kafka:latest 
+    container_name: kafka
     environment: 
       KAFKA_BROKER_ID: 1 
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181 

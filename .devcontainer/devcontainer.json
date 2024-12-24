@@ -1,0 +1,54 @@
+{
+  "name": "My Project Dev Container",
+  "dockerComposeFile": "../project/docker-compose.yaml", 
+  "service": "flask_app", // Use the service where your code resides
+  "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached", 
+  "workspaceFolder": "/app", // Match the target path in workspaceMount
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-azuretools.vscode-docker"
+  ],
+  "postCreateCommand": "pip install --no-cache-dir -r requirements.txt", // Adjust path if needed
+  "runServices": [
+    "db",
+    "prometheus", 
+    "grafana", 
+    "flask_app", 
+    "elasticsearch", 
+    "kibana", 
+    "elasticvue", 
+    "zookeeper", 
+    "kafka" 
+  ]
+}
+
+// {
+//   "name": "My Project Dev Container",
+//   "dockerComposeFile": "../project/docker-compose.yaml",
+//   "service": "db",
+//   "workspaceMount": "source=${localWorkspaceFolder}/project,target=/workspace,type=bind,consistency=cached",
+//   "workspaceFolder": "/workspace/project",
+//   "settings": {
+//     "terminal.integrated.shell.linux": "/bin/bash"
+//   },
+//   "extensions": [
+//     "ms-python.python",
+//     "ms-azuretools.vscode-docker"
+//   ],
+//   "postCreateCommand": "pip install -r /workspace/project/flask_app/requirements.txt",
+//   "remoteUser": "root",
+//   "runServices": [
+//     "db",
+//     "prometheus",
+//     "grafana",
+//     "python_container",
+//     "elasticsearch",
+//     "kibana",
+//     "elasticvue",
+//     "zookeeper",
+//     "kafka"
+//   ]
+// }
