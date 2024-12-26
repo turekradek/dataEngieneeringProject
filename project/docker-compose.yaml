@@ -2,10 +2,14 @@ version: '3.8'
 
 services:
   # db: 
-  #   image: postgres:1.0
-  #   container_name: postgresdb 
+  #   build: 
+  #     context: .
+  #     dockerfile: DockerfilePostgres
+  #   container_name: postgresdb
   #   environment: 
+  #     POSTGRES_USER: postgres
   #     POSTGRES_PASSWORD: password 
+  #     POSTGRES_DB: postgres
   #   volumes: 
   #     - postgres_data:/var/lib/postgresql/data
   #     - /home/r/git_projekty/dataEngieneeringProject/project/docker_volume:/docker_volume 
@@ -69,34 +73,34 @@ services:
       - FLASK_ENV=development 
       - FLASK_APP=app/app.py
     ports:
-     - "5000:5000" 
+      - "5000:5000" 
     depends_on:
     #  - db 
-     - prometheus
+      - prometheus
     networks:
       - project1_network
 
-  python_container: 
-    build:
-      context: . 
-      dockerfile: Dockerfile
-    image: python:3.12-slim 
-    container_name: python_container
-    volumes: 
-      - ./scripts:/scripts 
-      - postgres_data:/var/lib/postgresql/data 
-      - /home/r/git_projekty/dataEngieneeringProject/project/docker_volume:/docker_volume 
-      - /home/r/git_projekty/dataEngieneeringProject/project/bronze:/bronze 
-      - /home/r/git_projekty/dataEngieneeringProject/project/silver:/silver 
-      - /home/r/git_projekty/dataEngieneeringProject/project/gold:/gold 
-      - /home/r/git_projekty/dataEngieneeringProject/project/files_csv:/files_csv 
-      - /home/r/git_projekty/dataEngieneeringProject/project/files_json:/files_json 
-    # depends_on: 
-    #   - db 
-    command: > 
-      sh -c "apt-get update && apt-get install -y postgresql-client vim && tail -f /dev/null" 
-    networks: 
-      - project1_network
+  # python_container: 
+  #   build:
+  #     context: . 
+  #     dockerfile: Dockerfile2
+  #   # image: python:1.0
+  #   container_name: python_container
+  #   volumes: 
+  #     - ./scripts:/scripts 
+  #     - postgres_data:/var/lib/postgresql/data 
+  #     - /home/r/git_projekty/dataEngieneeringProject/project/docker_volume:/docker_volume 
+  #     - /home/r/git_projekty/dataEngieneeringProject/project/bronze:/bronze 
+  #     - /home/r/git_projekty/dataEngieneeringProject/project/silver:/silver 
+  #     - /home/r/git_projekty/dataEngieneeringProject/project/gold:/gold 
+  #     - /home/r/git_projekty/dataEngieneeringProject/project/files_csv:/files_csv 
+  #     - /home/r/git_projekty/dataEngieneeringProject/project/files_json:/files_json 
+  #   depends_on: 
+  #     - db 
+  #   command: > 
+  #     sh -c "tail -f /dev/null" 
+  #   networks: 
+  #     - project1_network
 
   elasticsearch: 
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0 
