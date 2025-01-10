@@ -10,7 +10,7 @@ authors = [
 python = "^3.12" 
 pandas = "^1.3.3" 
 psycopg2 = "^2.9.1" 
-dataEngieneeringParsers = { git = "git@github.com:turekradek/dataEngieneeringParsers.git", branch = "main" }
+dataengieneeringparsers = { git = "git@github.com:turekradek/dataEngieneeringParsers.git", branch = "main" }
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
