@@ -1,4 +1,6 @@
-
+from loadcsvtopostgres import testmethod
+import os
+print( os.getcwd() )
 
 def main():
     # Load data from CSV to PostgreSQL

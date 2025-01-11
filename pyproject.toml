@@ -9,6 +9,9 @@ readme = "README.md"
 python = ">=3.12"
 dataengieneeringparsers = {git = "https://github.com/turekradek/dataEngieneeringParsers.git"}
 
+[tool.poetry.scripts]
+
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"

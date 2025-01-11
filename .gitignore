@@ -28,3 +28,4 @@ project/DockerfilePostgres
 project/notes
 project/notescopilot
 project/prometheus.yaml
+project/*/__pycache__
