@@ -1,17 +1,14 @@
 [tool.poetry]
 name = "dataEngieneeringProject"
 version = "0.1.0"
-description = "A brief description of your project"
-authors = [
-    "turekradek <turekradek@gmail.com>",
-]
+description = ""
+authors = ["turekradek <turekradek@gmail.com>"]
+readme = "README.md"
 
-[tool.poetry.dependencies] 
-python = "^3.12" 
-psycopg2-binary = "^2.9.1" 
-dataengieneeringparsers = { git = "git@github.com:turekradek/dataEngieneeringParsers.git", branch = "main" }
+[tool.poetry.dependencies]
+python = ">=3.12"
+dataengieneeringparsers = {git = "https://github.com/turekradek/dataEngieneeringParsers.git"}
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
-
