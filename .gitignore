@@ -9,11 +9,15 @@ airflow/logs/*
 airflow/standalone_admin_password.txt
 airflow/*
 
+# venv files
+venv_project
+
 # FLASK_APP
 project/flask_app/__pycache__
 project/flask_app/app/__pycache__
 project/flask_app/app/app.log
 project/flask_app/app.log
+project/flask_app/venv_test
 
 # PROJECT
 project/app/__pycache__
