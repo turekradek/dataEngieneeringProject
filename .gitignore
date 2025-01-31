@@ -10,7 +10,7 @@ airflow/standalone_admin_password.txt
 airflow/*
 
 # venv files
-venv_project
+venv
 
 # FLASK_APP
 project/flask_app/__pycache__
