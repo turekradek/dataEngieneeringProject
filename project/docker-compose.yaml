@@ -6,6 +6,7 @@ services:
   #     context: .
   #     dockerfile: DockerfilePostgres
   #   container_name: postgresdb
+  #   image: project_db:latest
   #   environment: 
   #     POSTGRES_USER: postgres
   #     POSTGRES_PASSWORD: password 
@@ -86,7 +87,7 @@ services:
   #     context: . 
   #     dockerfile: Dockerfile2
   #   # image: python:1.0
-  #   container_name: python_container
+  #   container_name: pythonapp
   #   volumes: 
   #     - ./scripts:/scripts 
   #     - postgres_data:/var/lib/postgresql/data 
